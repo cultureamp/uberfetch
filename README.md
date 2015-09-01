@@ -1,2 +1,2 @@
-# fetch-request
+# uberfetch
 a layer over whatwg-fetch
