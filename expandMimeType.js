@@ -12,6 +12,6 @@ module.exports = function expandMimeType(abbreviatedType) {
     case 'csv':
       return 'text/csv';
     default:
-      return `application/${abbreviatedType}`;
+      return 'application/' + abbreviatedType;
   }
 }
