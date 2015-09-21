@@ -24,7 +24,7 @@ function wrapRequest(req, autoParseBody) {
 }
 
 // exposed api function to make a generic request
-function request(url, opts) {
+function uberfetch(url, opts) {
   opts = opts || {};
   var autoParseBody = opts.parseBody === false ? false : true;
   return wrapRequest(makeRequest(url, opts), autoParseBody);
@@ -34,16 +34,15 @@ function request(url, opts) {
 function makeCustomRequestFn(defaultOpts) {
   return function(url, opts) {
     opts = opts || {};
-    return request(url, defaults(opts, defaultOpts));
+    return uberfetch(url, defaults(opts, defaultOpts));
   };
 }
 
-module.exports = {
-  request: request,
-  wrapRequest: wrapRequest,
-  get: makeCustomRequestFn({method: 'get'}),
-  post: makeCustomRequestFn({method: 'post'}),
-  put: makeCustomRequestFn({method: 'put'}),
-  delete: makeCustomRequestFn({method: 'delete'}),
-  patch: makeCustomRequestFn({method: 'patch'}),
-}
+uberfetch.wrapRequest = wrapRequest;
+uberfetch.get = makeCustomRequestFn({method: 'get'});
+uberfetch.post = makeCustomRequestFn({method: 'post'});
+uberfetch.put = makeCustomRequestFn({method: 'put'});
+uberfetch.delete = makeCustomRequestFn({method: 'delete'});
+uberfetch.patch = makeCustomRequestFn({method: 'patch'});
+
+module.exports = uberfetch;

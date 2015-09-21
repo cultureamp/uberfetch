@@ -7,7 +7,7 @@ describe('expandHighLevelOpts', function() {
 
     var expected = {
       headers: {
-        'Accept': 'application/json'
+        'accept': 'application/json'
       }
     };
 
@@ -23,8 +23,8 @@ describe('expandHighLevelOpts', function() {
       method: 'post',
       body: '{"a":"b"}',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'accept': 'application/json',
+        'content-type': 'application/json'
       }
     };
 
@@ -42,8 +42,8 @@ describe('expandHighLevelOpts', function() {
       method: 'post',
       body: 'asd=asd',
       headers: {
-        'Accept': 'text/html',
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'accept': 'text/html',
+        'content-type': 'application/x-www-form-urlencoded'
       }
     };
 
@@ -57,7 +57,7 @@ describe('expandHighLevelOpts', function() {
 
     var actual = {
       headers: {
-        'Accept': 'text/html',
+        'accept': 'text/html',
       }
     };
 
@@ -72,7 +72,7 @@ describe('expandHighLevelOpts', function() {
     var actual = {
       method: 'delete',
       headers: {
-        'Accept': 'application/json',
+        'accept': 'application/json',
       }
     };
 

@@ -2,40 +2,54 @@ var omit = require ('lodash.omit');
 var expandMimeType = require('./expandMimeType');
 
 var highLevelOptNames = ['accept', 'contentType', 'parseBody'];
+var MIME_JSON = 'application/json';
 
 module.exports = function expandHighLevelOpts(uberOpts) {
+  var derivedContentType;
   var fetchOpts = omit(uberOpts, highLevelOptNames);
+  fetchOpts.headers = fetchOpts.headers || {};
 
-  // default accept type is JSON
-  uberOpts.accept = uberOpts.accept || 'json';
+  var existingHeaders = {};
+  Object.keys(fetchOpts.headers).forEach(function(headerName) {
+    existingHeaders[headerName.toLowerCase()] = fetchOpts.headers[headerName];
+  });
 
   if (uberOpts.body) {
-    // default serialization of 'body' field is JSON
-    uberOpts.contentType = uberOpts.contentType || 'json';
-
-    if (uberOpts.body && typeof uberOpts.body == 'object') {
-      // serialize object provided as request body
-      if (uberOpts.contentType === 'json') {
-        fetchOpts.body = JSON.stringify(uberOpts.body);
-      } else if (typeof FormData != 'undefined' && uberOpts.body instanceof FormData) {
-        // do nothing
-      } else {
-        throw new Error('Implicit serialization of request body to string not supported for contentType: '+uberOpts.contentType);
-      }
-    }
-
     // when request has a body, default method to post
     fetchOpts.method = fetchOpts.method || 'post';
   }
 
-  fetchOpts.headers = fetchOpts.headers || {};
-
-  if (!fetchOpts.headers['Accept']) {
-    fetchOpts.headers['Accept'] = expandMimeType(uberOpts.accept);
+  // set accept header from high level opt
+  if (uberOpts.accept) {
+    fetchOpts.headers['accept'] = expandMimeType(uberOpts.accept);
+  } else {
+    if (!existingHeaders['accept']) {
+      // default accept type is JSON
+      fetchOpts.headers['accept'] = MIME_JSON;
+    }
   }
 
-  if (uberOpts.contentType && !fetchOpts.headers['Content-Type']) {
-    fetchOpts.headers['Content-Type'] = expandMimeType(uberOpts.contentType);
+  // set content-type header from high level opt
+  if (uberOpts.contentType) {
+    fetchOpts.headers['content-type'] = expandMimeType(uberOpts.contentType);
+  } else {
+    if (!existingHeaders['content-type']) {
+      if (uberOpts.body) {
+        // when body present default content-type is JSON
+        fetchOpts.headers['content-type'] = MIME_JSON;
+      }
+    }
+  }
+
+  derivedContentType = existingHeaders['content-type'] || fetchOpts.headers['content-type']
+
+  if (uberOpts.body) {
+    if (typeof uberOpts.body == 'object') {
+      // serialize object provided as request body for known content-type
+      if (derivedContentType === MIME_JSON) {
+        fetchOpts.body = JSON.stringify(uberOpts.body);
+      }
+    }
   }
 
   return fetchOpts;

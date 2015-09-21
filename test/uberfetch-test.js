@@ -25,7 +25,7 @@ describe('uberfetch', function() {
     fetchMock.reset();
   });
 
-  it('makes a json request by default', function () {    
+  it('makes a json request by default', function () {
     var url = 'http://api.example.com/thing/1';
     var req = uberfetch.get(url);
 
@@ -34,12 +34,25 @@ describe('uberfetch', function() {
     assert.deepEqual(fetch.lastCall.args[1], {
       method: 'get',
       headers: {
-        'Accept': 'application/json'
+        'accept': 'application/json'
       },
     });
   });
 
-  it('makes a post', function () {    
+  it('sets no method by default', function () {
+    var url = 'http://api.example.com/thing/1';
+    var req = uberfetch(url);
+
+    assert(fetch.calledOnce);
+    assert.equal(fetch.lastCall.args[0], url);
+    assert.deepEqual(fetch.lastCall.args[1], {
+      headers: {
+        'accept': 'application/json'
+      },
+    });
+  });
+
+  it('makes a post', function () {
     var url = 'http://api.example.com/thing/1';
     var req = uberfetch.post(url, {body: {a: 'b'}});
 
@@ -49,8 +62,24 @@ describe('uberfetch', function() {
       method: 'post',
       body: '{"a":"b"}',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'accept': 'application/json',
+        'content-type': 'application/json'
+      },
+    });
+  });
+
+  it('defaults to post when body present', function () {
+    var url = 'http://api.example.com/thing/1';
+    var req = uberfetch(url, {body: {a: 'b'}});
+
+    assert(fetch.calledOnce);
+    assert.equal(fetch.lastCall.args[0], url);
+    assert.deepEqual(fetch.lastCall.args[1], {
+      method: 'post',
+      body: '{"a":"b"}',
+      headers: {
+        'accept': 'application/json',
+        'content-type': 'application/json'
       },
     });
   });
