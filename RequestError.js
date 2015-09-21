@@ -1,6 +1,6 @@
 var StandardError = require('standard-error');
 
-module.exports = function RequestError(response) {
+function RequestError(response) {
   var msg = response.status + ': ' + response.statusText;
   var extraProperties = {
     response: response,
@@ -13,3 +13,5 @@ module.exports = function RequestError(response) {
 RequestError.prototype = Object.create(StandardError.prototype, {
   constructor: {value: RequestError, configurable: true, writable: true}
 });
+
+module.exports = RequestError;

@@ -18,20 +18,22 @@ function wrapRequest(req, autoParseBody) {
   var reqWithErrorHandler = Promise.resolve(req)
     .then(rejectOnRequestError);
 
-  if (autoParseBody !== false) return reqWithErrorHandler;
+  if (autoParseBody === false) return reqWithErrorHandler;
 
   return reqWithErrorHandler.then(parseBody);
 }
 
 // exposed api function to make a generic request
 function request(url, opts) {
-  var autoParseBody = opts && typeof opts.parseBody == 'boolean' ? opts.parseBody : true;
+  opts = opts || {};
+  var autoParseBody = opts.parseBody === false ? false : true;
   return wrapRequest(makeRequest(url, opts), autoParseBody);
 }
 
 // util to generate request function with partially applied opts
 function makeCustomRequestFn(defaultOpts) {
   return function(url, opts) {
+    opts = opts || {};
     return request(url, defaults(opts, defaultOpts));
   };
 }
