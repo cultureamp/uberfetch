@@ -9,8 +9,11 @@ import uberfetch from 'uberfetch';
 ```js
 uberfetch.get('/cats/10')
   .then(cat =>  console.log('parsed json of cat #10', cat));
+```
 
-// which is equivalent to
+which is equivalent to:
+
+```js
 fetch('/cats/10', {
   method: 'get',
   headers: {
@@ -28,13 +31,16 @@ function rejectOnRequestError(res) {
 ```
 
 ## post JSON
-```
+```js
 uberfetch.post('/cats/10', {
   body: {id: 10, name: 'Keith'}
 })
   .then(cat => console.log('parsed json of updated cat #10', cat));
+```
 
-// which is equivalent to
+which is equivalent to:
+
+```js
 fetch('/cats/10', {
   method: 'post',
   body: JSON.stringify({id: 10, name: 'Keith'}),
@@ -57,8 +63,11 @@ uberfetch.get('/cats/10', {
   .then((body) => {
     document.body.innerHTML = body
   });
+```
 
-// which is equivalent to
+which is equivalent to:
+
+```js
 fetch('/cats/10', {
   method: 'get',
   headers: {
