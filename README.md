@@ -5,9 +5,8 @@ A thin layer over [fetch](https://github.com/github/fetch) which makes JSON the 
 import uberfetch from 'uberfetch';
 ```
 
-## JSON
+## get JSON
 ```js
-// get some json
 uberfetch.get('/cats/10')
   .then(cat =>  console.log('parsed json of cat #10', cat));
 
@@ -26,8 +25,10 @@ function rejectOnRequestError(res) {
   if (res.ok) return res;
   return Promise.reject(new RequestError(res));
 }
+```
 
-// post some json
+## post JSON
+```
 uberfetch.post('/cats/10', {
   body: {id: 10, name: 'Keith'}
 })
@@ -47,7 +48,7 @@ fetch('/cats/10', {
   .then(cat =>  console.log('parsed json of updated cat #10', cat));
 ```
 
-## HTML
+## get HTML
 ```js
 // get some html
 uberfetch.get('/cats/10', {
