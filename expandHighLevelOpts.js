@@ -17,6 +17,8 @@ module.exports = function expandHighLevelOpts(uberOpts) {
       // serialize object provided as request body
       if (uberOpts.contentType === 'json') {
         fetchOpts.body = JSON.stringify(uberOpts.body);
+      } else if (typeof FormData != 'undefined' && uberOpts.body instanceof FormData) {
+        // do nothing
       } else {
         throw new Error('Implicit serialization of request body to string not supported for contentType: '+uberOpts.contentType);
       }
