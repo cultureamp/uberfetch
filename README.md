@@ -2,13 +2,13 @@
 A thin layer over [fetch](https://github.com/github/fetch) which makes JSON the default, and turns HTTP errors into Promise rejections.
 
 ```js
-import uberFetch from 'uberfetch';
+import uberfetch from 'uberfetch';
 ```
 
 ## JSON
 ```js
 // get some json
-uberFetch.get('/cats/10')
+uberfetch.get('/cats/10')
   .then(cat =>  console.log('parsed json of cat #10', cat));
 
 // which is equivalent to
@@ -28,7 +28,7 @@ function rejectOnRequestError(res) {
 }
 
 // post some json
-uberFetch.post('/cats/10', {
+uberfetch.post('/cats/10', {
   body: {id: 10, name: 'Keith'}
 })
   .then(cat => console.log('parsed json of updated cat #10', cat));
@@ -50,7 +50,7 @@ fetch('/cats/10', {
 ## HTML
 ```js
 // get some html
-uberFetch.get('/cats/10', {
+uberfetch.get('/cats/10', {
   accept: 'html'
 })
   .then((body) => {
