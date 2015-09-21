@@ -1,4 +1,4 @@
-export default function parseBody(res) {
+module.exports = function parseBody(res) {
   switch (res.headers.get('Content-Type')) {
     case 'application/json':
       return res.json();

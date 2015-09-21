@@ -1,8 +1,15 @@
-import StandardError from 'standard-error';
+var StandardError = require('standard-error');
 
-export default class RequestError extends StandardError {
-  constructor(response) {
-    this.response = response;
-    this.status = response.status;
-  }
+module.exports = function RequestError(response) {
+  var msg = response.status + ': ' + response.statusText;
+  var extraProperties = {
+    response: response,
+    status: response.status
+  };
+
+  StandardError.call(this, msg, extraProperties);
 }
+
+RequestError.prototype = Object.create(StandardError.prototype, {
+  constructor: {value: RequestError, configurable: true, writable: true}
+});

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "mocha --watch",
+    "test": "mocha"
   },
   "author": "James Friend <james@jsdf.co>",
   "license": "MIT",
@@ -12,5 +13,8 @@
     "lodash.defaults": "^3.1.2",
     "lodash.omit": "^3.1.0",
     "standard-error": "^1.1.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.2"
   }
 }
