@@ -27,16 +27,11 @@ describe('uberfetch', function() {
 
   it('makes a json request by default', function () {
     var url = 'http://api.example.com/thing/1';
-    var req = uberfetch.get(url);
+    var req = uberfetch(url);
 
     assert(fetch.calledOnce);
     assert.equal(fetch.lastCall.args[0], url);
-    assert.deepEqual(fetch.lastCall.args[1], {
-      method: 'get',
-      headers: {
-        'accept': 'application/json'
-      },
-    });
+    assert.equal(fetch.lastCall.args[1].headers['accept'], 'application/json');
   });
 
   it('sets no method by default', function () {
@@ -45,30 +40,10 @@ describe('uberfetch', function() {
 
     assert(fetch.calledOnce);
     assert.equal(fetch.lastCall.args[0], url);
-    assert.deepEqual(fetch.lastCall.args[1], {
-      headers: {
-        'accept': 'application/json'
-      },
-    });
+    assert.equal(fetch.lastCall.args[1].method, undefined);
   });
 
-  it('makes a post', function () {
-    var url = 'http://api.example.com/thing/1';
-    var req = uberfetch.post(url, {body: {a: 'b'}});
-
-    assert(fetch.calledOnce);
-    assert.equal(fetch.lastCall.args[0], url);
-    assert.deepEqual(fetch.lastCall.args[1], {
-      method: 'post',
-      body: '{"a":"b"}',
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json'
-      },
-    });
-  });
-
-  it('defaults to post when body present', function () {
+  it('when a body is present, defaults to a json post', function () {
     var url = 'http://api.example.com/thing/1';
     var req = uberfetch(url, {body: {a: 'b'}});
 
@@ -81,6 +56,66 @@ describe('uberfetch', function() {
         'accept': 'application/json',
         'content-type': 'application/json'
       },
+    });
+  });
+
+  it('posts a form', function () {
+    var url = 'http://api.example.com/thing/1';
+    var req = uberfetch(url, {accept: 'html', contentType: 'form', body: 'a=a'});
+
+    assert(fetch.calledOnce);
+    assert.equal(fetch.lastCall.args[0], url);
+    assert.deepEqual(fetch.lastCall.args[1], {
+      method: 'post',
+      body: 'a=a',
+      headers: {
+        'accept': 'text/html',
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+    });
+  });
+
+  describe('.get', function() {
+    it('sets the GET method', function () {
+      var url = 'http://api.example.com/thing/1';
+      var req = uberfetch.get(url);
+
+      assert(fetch.calledOnce);
+      assert.equal(fetch.lastCall.args[0], url);
+      assert.equal(fetch.lastCall.args[1].method, 'get');
+    });
+  });
+
+  describe('.post', function() {
+    it('sets the POST method', function () {
+      var url = 'http://api.example.com/thing/1';
+      var req = uberfetch.post(url, {method: 'post', body: {a: 'b'}});
+
+      assert(fetch.calledOnce);
+      assert.equal(fetch.lastCall.args[0], url);
+      assert.equal(fetch.lastCall.args[1].method, 'post');
+    });
+  });
+
+  describe('.put', function() {
+    it('sets the PUT method', function () {
+      var url = 'http://api.example.com/thing/1';
+      var req = uberfetch.put(url, {method: 'put', body: {a: 'b'}});
+
+      assert(fetch.calledOnce);
+      assert.equal(fetch.lastCall.args[0], url);
+      assert.equal(fetch.lastCall.args[1].method, 'put');
+    });
+  });
+
+  describe('.delete', function() {
+    it('sets the DELETE method', function () {
+      var url = 'http://api.example.com/thing/1';
+      var req = uberfetch.delete(url, {method: 'delete', body: {a: 'b'}});
+
+      assert(fetch.calledOnce);
+      assert.equal(fetch.lastCall.args[0], url);
+      assert.equal(fetch.lastCall.args[1].method, 'delete');
     });
   });
 });
