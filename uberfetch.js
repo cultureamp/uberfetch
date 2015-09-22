@@ -38,6 +38,7 @@ function makeCustomRequestFn(defaultOpts) {
   };
 }
 
+uberfetch.RequestError = RequestError;
 uberfetch.wrapRequest = wrapRequest;
 uberfetch.get = makeCustomRequestFn({method: 'get'});
 uberfetch.post = makeCustomRequestFn({method: 'post'});
