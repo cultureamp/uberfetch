@@ -1,13 +1,17 @@
 var StandardError = require('standard-error');
+var assign = require('lodash.assign');
 
-function RequestError(response) {
-  var msg = response.status + ': ' + response.statusText;
-  var extraProperties = {
-    response: response,
-    status: response.status
-  };
+function RequestError(response, extraProperties) {
+  var message = response.status + ': ' + response.statusText;
+  var properties = assign(
+    {
+      response: response,
+      status: response.status
+    },
+    extraProperties
+  );
 
-  StandardError.call(this, msg, extraProperties);
+  StandardError.call(this, message, properties);
 }
 
 RequestError.prototype = Object.create(StandardError.prototype, {

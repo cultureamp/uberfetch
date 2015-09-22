@@ -1,4 +1,4 @@
-var defaults = require('lodash.defaults');
+var assign = require('lodash.assign');
 var RequestError = require('./RequestError');
 var parseBody = require('./parseBody');
 var expandHighLevelOpts = require('./expandHighLevelOpts');
@@ -6,7 +6,11 @@ var expandHighLevelOpts = require('./expandHighLevelOpts');
 function rejectOnRequestError(res) {
   // TODO: also allow 304: Not Modified?
   if (res.ok) return res;
-  return Promise.reject(new RequestError(res));
+
+  return parseBody(res)
+    .then(function(body) {
+      return Promise.reject(new RequestError(res, {body: body}));
+    });
 }
 
 function makeRequest(url, opts) {
@@ -34,7 +38,7 @@ function uberfetch(url, opts) {
 function makeCustomRequestFn(defaultOpts) {
   return function(url, opts) {
     opts = opts || {};
-    return uberfetch(url, defaults(opts, defaultOpts));
+    return uberfetch(url, assign({}, defaultOpts, opts));
   };
 }
 
