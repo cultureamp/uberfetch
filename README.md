@@ -8,7 +8,7 @@ import uberfetch from 'uberfetch';
 ### get JSON
 ```js
 uberfetch('/cats/10')
-  .then(cat =>  console.log('parsed json of cat #10', cat));
+  .then(cat => console.log('parsed json of cat #10', cat))
 ```
 
 which is equivalent to:
@@ -76,6 +76,26 @@ fetch('/cats/10', {
   .then((response) => response.text())
   .then((body) => {
     document.body.innerHTML = body
+  });
+```
+
+### catch typed errors
+
+```js
+let cat = {id: 10, name: 'Keith'};
+
+uberfetch.post('/cats/10', {body: cat})
+  .then(cat => FlashMessage.show(cat.name 'saved'))
+  .catch(err => {
+    if (err instanceof uberfetch.RequestError) {
+      // handle some http error types
+      if (err.status == 422) {
+        return AlertModal.show('Validation failed for '+cat.name);
+      } else if (err.status == 404) {
+        return AlertModal.show('Unknown cat '+cat.name);
+      }
+    }
+    return Promise.reject(err);
   });
 ```
 
