@@ -8,57 +8,54 @@ import uberfetch from 'uberfetch';
 ### get JSON
 ```js
 uberfetch('/cats/10')
-  .then(cat => console.log('parsed json of cat #10', cat))
+  .then(res => /* do stuff */);
 ```
 
 which is equivalent to:
 
 ```js
+function rejectOnRequestError(res) {
+  if (res.ok) return res;
+  return Promise.reject(new RequestError(res));
+}
+
 fetch('/cats/10', {
   headers: {
     'accept': 'application/json'
   }
 })
   .then(rejectOnRequestError)
-  .then(res => res.json())
-  .then(cat =>  console.log('parsed json of cat #10', cat));
-
-function rejectOnRequestError(res) {
-  if (res.ok) return res;
-  return Promise.reject(new RequestError(res));
-}
+  .then(res => /* do stuff */);
 ```
 
 ### post JSON
 ```js
-uberfetch.post('/cats/10', {
-  body: {id: 10, name: 'Keith'}
-})
-  .then(cat => console.log('parsed json of updated cat #10', cat));
+let updatedCat = {id: 10, name: 'Keith'};
+
+uberfetch.post('/cats/10', {body: updatedCat});
 ```
 
 which is equivalent to:
 
 ```js
+let updatedCat = {id: 10, name: 'Keith'};
+
 fetch('/cats/10', {
   method: 'post',
-  body: JSON.stringify({id: 10, name: 'Keith'}),
+  body: JSON.stringify(updatedCat),
   headers: {
     'content-type': 'application/json'
     'accept': 'application/json'
   }
 })
-  .then(rejectOnRequestError)
-  .then(res => res.json())
-  .then(cat =>  console.log('parsed json of updated cat #10', cat));
+  .then(rejectOnRequestError);
 ```
 
 ### get HTML
 ```js
 // get some html
-uberfetch('/cats/10', {
-  accept: 'html'
-})
+uberfetch('/cats/10', {accept: 'html'})
+  .then(res => /* do stuff */);
 ```
 
 which is equivalent to:
@@ -70,6 +67,7 @@ fetch('/cats/10', {
   }
 })
   .then(rejectOnRequestError)
+  .then(res => /* do stuff */);
 ```
 
 ### catch typed errors
