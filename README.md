@@ -76,13 +76,14 @@ fetch('/cats/10', {
 let cat = {id: 10, name: 'Keith'};
 
 uberfetch.post('/cats/10', {body: cat})
-  .then(cat => FlashMessage.show(cat.name 'saved'))
+  .then(res => res.json())
+  .then(body => FlashMessage.show(`${body.name} saved`))
   .catch(err => {
     if (err instanceof uberfetch.RequestError) {
       if (err.status == 422) {
         return err.response.json()
           .then(body => 
-            AlertModal.show('Validation failed: '+body.validationErrors)
+            AlertModal.show(`Validation failed: ${body.validationErrors}`)
           );
       }
     }
@@ -104,7 +105,7 @@ async function() {
     if (err instanceof uberfetch.RequestError) {
       if (err.status == 422) {
         let body = err.response.json()
-        AlertModal.show('Validation failed: '+body.validationErrors);
+        AlertModal.show(`Validation failed: ${body.validationErrors}`);
         return;
       }
     }
