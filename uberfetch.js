@@ -1,37 +1,26 @@
 var assign = require('lodash.assign');
 var RequestError = require('./RequestError');
-var parseBody = require('./parseBody');
 var expandHighLevelOpts = require('./expandHighLevelOpts');
 
 function rejectOnRequestError(res) {
   // TODO: also allow 304: Not Modified?
   if (res.ok) return res;
-
-  return parseBody(res)
-    .then(function(body) {
-      return Promise.reject(new RequestError(res, {body: body}));
-    });
+  return Promise.reject(new RequestError(res));
 }
 
 function makeRequest(url, opts) {
-  return fetch(url, expandHighLevelOpts(opts));
+  return fetch(url, expandHighLevelOpts(opts || {}));
 }
 
 // wrap an existing fetch promise with error handling and body parsing behavior
 function wrapRequest(req, autoParseBody) {
-  var reqWithErrorHandler = Promise.resolve(req)
+  return Promise.resolve(req)
     .then(rejectOnRequestError);
-
-  if (autoParseBody === false) return reqWithErrorHandler;
-
-  return reqWithErrorHandler.then(parseBody);
 }
 
 // exposed api function to make a generic request
 function uberfetch(url, opts) {
-  opts = opts || {};
-  var autoParseBody = opts.parseBody === false ? false : true;
-  return wrapRequest(makeRequest(url, opts), autoParseBody);
+  return wrapRequest(makeRequest(url, opts));
 }
 
 // util to generate request function with partially applied opts

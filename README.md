@@ -59,9 +59,6 @@ fetch('/cats/10', {
 uberfetch('/cats/10', {
   accept: 'html'
 })
-  .then((body) => {
-    document.body.innerHTML = body
-  });
 ```
 
 which is equivalent to:
@@ -73,10 +70,6 @@ fetch('/cats/10', {
   }
 })
   .then(rejectOnRequestError)
-  .then((response) => response.text())
-  .then((body) => {
-    document.body.innerHTML = body
-  });
 ```
 
 ### catch typed errors
@@ -88,15 +81,38 @@ uberfetch.post('/cats/10', {body: cat})
   .then(cat => FlashMessage.show(cat.name 'saved'))
   .catch(err => {
     if (err instanceof uberfetch.RequestError) {
-      // handle some http error types
       if (err.status == 422) {
-        return AlertModal.show('Validation failed for '+cat.name);
-      } else if (err.status == 404) {
-        return AlertModal.show('Unknown cat '+cat.name);
+        return err.response.json()
+          .then(body => 
+            AlertModal.show('Validation failed: '+body.validationErrors)
+          );
       }
     }
     return Promise.reject(err);
   });
+```
+
+Or with ES7 `async/await`
+
+```js
+async function() {
+  let cat = {id: 10, name: 'Keith'};
+
+  try {
+    let response = await uberfetch.post('/cats/10', {body: cat})
+    let body = await response.json();
+    FlashMessage.show(`${body.name} saved`);
+  } catch (err) {
+    if (err instanceof uberfetch.RequestError) {
+      if (err.status == 422) {
+        let body = err.response.json()
+        AlertModal.show('Validation failed: '+body.validationErrors);
+        return;
+      }
+    }
+    return Promise.reject(err);
+  }
+}
 ```
 
 ## API
