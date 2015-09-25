@@ -1,4 +1,4 @@
-var assign = require('lodash.assign');
+var assign = require('object.assign');
 var RequestError = require('./RequestError');
 var expandHighLevelOpts = require('./expandHighLevelOpts');
 

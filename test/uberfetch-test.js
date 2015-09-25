@@ -1,5 +1,4 @@
 var assert = require('assert');
-var sinon = require('sinon');
  
 global.fetch = require('node-fetch');
 var fetchMock = require('fetch-mock');

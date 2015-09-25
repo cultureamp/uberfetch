@@ -1,12 +1,17 @@
-var omit = require ('lodash.omit');
+var assign = require ('object.assign');
 var expandMimeType = require('./expandMimeType');
 
-var highLevelOptNames = ['accept', 'contentType', 'parseBody'];
+var highLevelOptNames = ['accept', 'contentType'];
 var MIME_JSON = 'application/json';
 
 module.exports = function expandHighLevelOpts(uberOpts) {
   var derivedContentType;
-  var fetchOpts = omit(uberOpts, highLevelOptNames);
+  var fetchOpts = assign({}, uberOpts);
+
+  for (var i = highLevelOptNames.length - 1; i >= 0; i--) {
+    delete fetchOpts[highLevelOptNames[i]];
+  };
+
   fetchOpts.headers = fetchOpts.headers || {};
 
   var existingHeaders = {};

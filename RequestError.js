@@ -1,5 +1,5 @@
 var StandardError = require('standard-error');
-var assign = require('lodash.assign');
+var assign = require('object.assign');
 
 function RequestError(response, extraProperties) {
   var message = response.status + ': ' + response.statusText;
