@@ -20,6 +20,7 @@ function rejectOnRequestError(res) {
 }
 
 fetch('/cats/10', {
+  credentials: 'same-origin',
   headers: {
     'accept': 'application/json'
   }
@@ -43,6 +44,7 @@ let updatedCat = {id: 10, name: 'Keith'};
 fetch('/cats/10', {
   method: 'post',
   body: JSON.stringify(updatedCat),
+  credentials: 'same-origin',
   headers: {
     'content-type': 'application/json'
     'accept': 'application/json'
@@ -62,6 +64,7 @@ which is equivalent to:
 
 ```js
 fetch('/cats/10', {
+  credentials: 'same-origin',
   headers: {
     'accept': 'text/html'
   }

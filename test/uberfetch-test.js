@@ -59,6 +59,7 @@ describe('uberfetch', function() {
     assert.deepEqual(fetch.lastCall.args[1], {
       method: 'post',
       body: '{"a":"b"}',
+      credentials: 'same-origin',
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json'
@@ -74,6 +75,7 @@ describe('uberfetch', function() {
     assert.deepEqual(fetch.lastCall.args[1], {
       method: 'post',
       body: 'a=a',
+      credentials: 'same-origin',
       headers: {
         'accept': 'text/html',
         'content-type': 'application/x-www-form-urlencoded'

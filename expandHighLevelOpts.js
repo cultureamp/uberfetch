@@ -14,6 +14,8 @@ module.exports = function expandHighLevelOpts(uberOpts) {
 
   fetchOpts.headers = fetchOpts.headers || {};
 
+  fetchOpts.credentials = fetchOpts.credentials || 'same-origin';
+
   var existingHeaders = {};
   Object.keys(fetchOpts.headers).forEach(function(headerName) {
     existingHeaders[headerName.toLowerCase()] = fetchOpts.headers[headerName];

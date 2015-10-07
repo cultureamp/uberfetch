@@ -7,8 +7,9 @@ describe('expandHighLevelOpts', function() {
 
     var expected = {
       headers: {
-        'accept': 'application/json'
-      }
+        'accept': 'application/json',
+      },
+      credentials: 'same-origin',
     };
 
     assert.deepEqual(expected, actual);
@@ -24,8 +25,9 @@ describe('expandHighLevelOpts', function() {
       body: '{"a":"b"}',
       headers: {
         'accept': 'application/json',
-        'content-type': 'application/json'
-      }
+        'content-type': 'application/json',
+      },
+      credentials: 'same-origin',
     };
 
     assert.deepEqual(expected, actual);
@@ -43,8 +45,9 @@ describe('expandHighLevelOpts', function() {
       body: 'asd=asd',
       headers: {
         'accept': 'text/html',
-        'content-type': 'application/x-www-form-urlencoded'
-      }
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      credentials: 'same-origin',
     };
 
     assert.deepEqual(expected, actual);
@@ -58,7 +61,8 @@ describe('expandHighLevelOpts', function() {
     var actual = {
       headers: {
         'accept': 'text/html',
-      }
+      },
+      credentials: 'same-origin',
     };
 
     assert.deepEqual(expected, actual);
@@ -73,7 +77,8 @@ describe('expandHighLevelOpts', function() {
       method: 'delete',
       headers: {
         'accept': 'application/json',
-      }
+      },
+      credentials: 'same-origin',
     };
 
     assert.deepEqual(expected, actual);
