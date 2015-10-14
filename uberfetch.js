@@ -36,7 +36,7 @@ uberfetch.wrapRequest = wrapRequest;
 uberfetch.get = makeCustomRequestFn({method: 'get'});
 uberfetch.post = makeCustomRequestFn({method: 'post'});
 uberfetch.put = makeCustomRequestFn({method: 'put'});
-uberfetch.delete = makeCustomRequestFn({method: 'delete'});
+uberfetch['delete'] = makeCustomRequestFn({method: 'delete'});
 uberfetch.patch = makeCustomRequestFn({method: 'patch'});
 
 module.exports = uberfetch;
